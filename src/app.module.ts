@@ -1,16 +1,24 @@
+/*
+ * @Descripttion:
+ * @version:
+ * @Author: situ
+ * @Date: 2021-10-24 16:59:54
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-11-15 00:57:38
+ */
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { CommonModule } from 'libs/common/src';
-import { UsersModule } from './users/users.module';
-import { PassportModule } from '@nestjs/passport';
+import { UserModule } from './modules/user/user.module';
 import { MulterModule } from '@nestjs/platform-express';
+import { AuthModule } from './modules//auth/auth.module';
+import { LabelModule } from './modules/label/label.module';
 const MAO = require('multer-aliyun-oss');
 
 @Module({
   imports: [
     CommonModule,
-    PassportModule,
     //异步加载OSS配置
     MulterModule.registerAsync({
       useFactory() {
@@ -26,7 +34,9 @@ const MAO = require('multer-aliyun-oss');
         };
       },
     }),
-    UsersModule,
+    UserModule,
+    AuthModule,
+    LabelModule,
   ],
   controllers: [AppController],
   providers: [AppService],

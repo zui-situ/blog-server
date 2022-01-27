@@ -1,3 +1,11 @@
+/*
+ * @Descripttion:
+ * @version:
+ * @Author: situ
+ * @Date: 2021-10-24 23:11:18
+ * @LastEditors:
+ * @LastEditTime: 2021-11-14 21:54:35
+ */
 import { Module, Global, CacheModule } from '@nestjs/common';
 import { CommonService } from './common.service';
 import { ConfigModule } from '@nestjs/config';
@@ -30,6 +38,6 @@ import { JwtModule } from '@nestjs/jwt';
     DbModule,
   ],
   providers: [CommonService],
-  exports: [CommonService],
+  exports: [CommonService, JwtModule],
 })
 export class CommonModule {}

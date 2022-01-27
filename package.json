@@ -32,7 +32,12 @@
     "@types/mongoose": "^5.11.97",
     "bcryptjs": "^2.4.3",
     "cache-manager": "^3.4.4",
+    "class-transformer": "^0.4.0",
+    "class-validator": "^0.13.1",
+    "crypto": "^1.0.1",
     "express": "^4.17.1",
+    "log4js": "^6.3.0",
+    "moment": "^2.29.1",
     "mongoose": "^6.0.12",
     "multer-aliyun-oss": "^1.1.1",
     "nestjs-mongoose-crud": "^2.1.2",
@@ -43,6 +48,7 @@
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^7.4.0",
+    "stacktrace-js": "^2.0.2",
     "swagger-ui-express": "^4.1.6"
   },
   "devDependencies": {

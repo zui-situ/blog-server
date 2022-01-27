@@ -2,29 +2,27 @@ import { Module, Global } from '@nestjs/common';
 import { DbService } from './db.service';
 import { TypegooseModule } from 'nestjs-typegoose';
 import { User } from './models/user.model';
+import { Label } from './models/label.model';
 
-const models = TypegooseModule.forFeature([
-  User
-])
+const models = TypegooseModule.forFeature([User, Label]);
 
 //标记为全局引用模块
 @Global()
-
 @Module({
-  imports:[
+  imports: [
     //ConfigModule加载完成后才允许加载，避免找不到配置项报错
     TypegooseModule.forRootAsync({
-      useFactory(){
+      useFactory() {
         return {
-          uri:process.env.DB,
-          useNewUrlParser:true,
+          uri: process.env.DB,
+          useNewUrlParser: true,
           // useUnifiedTopology:true,
           // useCreateIndex:true,
           // useFindAndModify:false
-        }
-      }
+        };
+      },
     }),
-    models
+    models,
   ],
   providers: [DbService],
   exports: [DbService, models],
