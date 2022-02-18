@@ -1,15 +1,4 @@
-/*
- * @Descripttion:
- * @version:
- * @Author: situ
- * @Date: 2021-11-03 00:45:36
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-11-22 00:40:46
- */
-import { User } from '@app/db/models/user.model';
 import { Injectable } from '@nestjs/common';
-import { ReturnModelType } from '@typegoose/typegoose';
-import { InjectModel } from 'nestjs-typegoose';
 import { UserService } from '../user/user.service';
 import { encryptPassword } from '../../utils/cryptogram';
 import { JwtService } from '@nestjs/jwt';

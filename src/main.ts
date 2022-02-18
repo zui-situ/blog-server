@@ -29,7 +29,7 @@ async function bootstrap() {
 
   // 使用拦截器打印出参
   app.useGlobalInterceptors(new TransformInterceptor());
-  // 全局过滤器
+  // // 全局过滤器
   app.useGlobalFilters(new AllExceptionsFilter());
   app.useGlobalFilters(new HttpExceptionFilter());
 

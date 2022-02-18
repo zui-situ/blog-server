@@ -1,6 +1,5 @@
 import { Controller, Get, Post, Body, UseGuards } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiBody, ApiBearerAuth } from '@nestjs/swagger';
-import { Crud } from 'nestjs-mongoose-crud';
 import { User, UserDocument } from '@app/db/models/user.model';
 import { InjectModel } from 'nestjs-typegoose';
 import { ReturnModelType } from '@typegoose/typegoose';
@@ -10,6 +9,7 @@ import { AuthService } from '../auth/auth.service';
 import { RCode } from '../../utils/rcode';
 import { AuthGuard } from '@nestjs/passport';
 import { CurrentUser } from 'libs/common/decorator/current.user.decorator';
+import { Crud } from 'nestjs-mongoose-crud';
 
 //添加增删改查方法
 // @Crud({
@@ -20,9 +20,9 @@ import { CurrentUser } from 'libs/common/decorator/current.user.decorator';
 export class UserController {
   //注入模块
   constructor(
-    @InjectModel(User) private model: ReturnModelType<typeof User>,
     private readonly authService: AuthService,
     private readonly usersService: UserService,
+    @InjectModel(User) private model: ReturnModelType<typeof User>,
   ) {}
 
   @Post('register')

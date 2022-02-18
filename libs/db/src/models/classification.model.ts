@@ -15,10 +15,10 @@ export class Classification {
   name: string;
 
   @ApiProperty({
-    description: '[禁用标记]: 0-不展示 | 1-展示',
+    description: '[禁用标记]: 0-关闭 | 1-开启',
   })
   @prop()
-  disable: number;
+  status: number;
 
   @ApiProperty({
     description: '[删除标记]: 0-未删除 | 1-删除',

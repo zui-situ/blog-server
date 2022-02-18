@@ -3,8 +3,9 @@ import { DbService } from './db.service';
 import { TypegooseModule } from 'nestjs-typegoose';
 import { User } from './models/user.model';
 import { Label } from './models/label.model';
+import { Classification } from './models/classification.model';
 
-const models = TypegooseModule.forFeature([User, Label]);
+const models = TypegooseModule.forFeature([User, Label, Classification]);
 
 //标记为全局引用模块
 @Global()

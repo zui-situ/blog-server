@@ -10,34 +10,35 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
-import { LabelService } from './label.service';
-import { createDto, editStatusDto, listDto } from './label.dto';
+import { ClassificationService } from './classification.service';
+import { createDto, editStatusDto, listDto } from './classification.dto';
 import { ObjectId } from 'mongoose';
 import { AuthGuard } from '@nestjs/passport';
 import { Crud } from 'libs/common/decorator/crud/crud.decorator';
-import { Label } from '@app/db/models/label.model';
+import { Classification } from '@app/db/models/classification.model';
 import { InjectModel } from 'nestjs-typegoose';
 import { ReturnModelType } from '@typegoose/typegoose';
 
 //添加增删改查方法
 @Crud({
-  model: Label,
+  model: Classification,
   findKey: 'name',
   createDefaultValue: {
     status: 1,
     deleteFlag: 0,
   },
 })
-@Controller('label')
-@ApiTags('标签')
-export class LabelController {
+@Controller('classification')
+@ApiTags('分类')
+export class ClassificationController {
   constructor(
-    private readonly labelService: LabelService,
-    @InjectModel(Label) private model: ReturnModelType<typeof Label>,
+    private readonly classificationService: ClassificationService,
+    @InjectModel(Classification)
+    private model: ReturnModelType<typeof Classification>,
   ) {}
 
   @Post('editStatus/:id')
-  @ApiOperation({ summary: '修改标签状态' })
+  @ApiOperation({ summary: '修改分类状态' })
   @ApiBearerAuth() //标签这个接口需要传递token
   @UseGuards(AuthGuard('jwt'))
   @UsePipes(new ValidationPipe()) // 使用管道验证
@@ -46,18 +47,18 @@ export class LabelController {
     @Body() body: editStatusDto,
   ): Promise<any> {
     const { status } = body;
-    await this.labelService.upDateLabelStatus(id, status);
+    await this.classificationService.upDateLabelStatus(id, status);
     return { message: '修改成功' };
   }
 
   @Get('list')
-  @ApiOperation({ summary: '标签列表' })
+  @ApiOperation({ summary: '分类列表' })
   @ApiBearerAuth() //标签这个接口需要传递token
   @UseGuards(AuthGuard('jwt'))
   @UsePipes(new ValidationPipe()) // 使用管道验证
   async labelList(@Query() query: listDto): Promise<any> {
-    const list = await this.labelService.labelList(query);
-    const count = await this.labelService.labelCount(query);
+    const list = await this.classificationService.labelList(query);
+    const count = await this.classificationService.labelCount(query);
     return {
       data: {
         list,
