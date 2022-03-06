@@ -37,12 +37,12 @@ export class listDto {
     description: '当前页数',
     type: Number,
   })
-  @IsNotEmpty({ message: 'pageNo不能为空' })
+  // @IsNotEmpty({ message: 'pageNo不能为空' })
   readonly pageNo: number;
   @ApiProperty({
     description: '单页数量',
     type: Number,
   })
-  @IsNotEmpty({ message: 'pageSize不能为空' })
+  // @IsNotEmpty({ message: 'pageSize不能为空' })
   readonly pageSize: number;
 }

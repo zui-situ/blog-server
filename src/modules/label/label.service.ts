@@ -76,13 +76,18 @@ export class LabelService {
     const { pageNo, pageSize } = query;
     const skip = (pageNo - 1) * pageSize;
     const findObj = await this.ListFindObj(query);
-    console.log(findObj);
-    const data = await this.labelModel
-      .find(findObj, '-deleteFlag', {
-        sort: '-createdAt',
+    const selectObj = {
+      sort: '-createdAt',
+    };
+    if (pageNo && pageSize) {
+      Object.assign(selectObj, {
         limit: pageSize * 1,
         skip,
-      })
+      });
+    }
+    console.log(selectObj);
+    const data = await this.labelModel
+      .find(findObj, '-deleteFlag', selectObj)
       .lean();
     return data;
   }

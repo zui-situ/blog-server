@@ -15,31 +15,37 @@ export type ArticleDocument = DocumentType<Article>;
 export class Article {
   @ApiProperty({ description: '用户信息' })
   @prop({ ref: 'User' })
-  user: Ref<User>;
+  public user: Ref<User>;
 
   @ApiProperty({ description: '分类' })
   @prop({ ref: 'Classification' })
-  classification: Ref<Classification>;
+  public classification: Ref<Classification>;
 
   @ApiProperty({ description: '标签' })
   @prop({ ref: 'Label' })
-  label: Ref<Label>;
+  public label: Ref<Label>[]; // This is a Reference Array
 
   @ApiProperty({ description: '标题', example: 'title' })
   @prop()
-  title: string;
+  public title: string;
 
   @ApiProperty({ description: '内容', example: 'content' })
   @prop()
-  content: string;
+  public content: string;
 
   @ApiProperty({ description: '浏览数' })
   @prop()
-  readNum?: number;
+  public readNum?: number;
+
+  @ApiProperty({
+    description: '[发布标记]: 0-未发布 | 1-发布',
+  })
+  @prop()
+  public status: number;
 
   @ApiProperty({
     description: '[删除标记]: 0-未删除 | 1-删除',
   })
   @prop()
-  deleteFlag: number;
+  public deleteFlag: number;
 }

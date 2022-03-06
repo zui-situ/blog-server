@@ -47,7 +47,7 @@ export class ClassificationController {
     @Body() body: editStatusDto,
   ): Promise<any> {
     const { status } = body;
-    await this.classificationService.upDateLabelStatus(id, status);
+    await this.classificationService.upDateClassStatus(id, status);
     return { message: '修改成功' };
   }
 
@@ -57,8 +57,8 @@ export class ClassificationController {
   @UseGuards(AuthGuard('jwt'))
   @UsePipes(new ValidationPipe()) // 使用管道验证
   async labelList(@Query() query: listDto): Promise<any> {
-    const list = await this.classificationService.labelList(query);
-    const count = await this.classificationService.labelCount(query);
+    const list = await this.classificationService.classList(query);
+    const count = await this.classificationService.classCount(query);
     return {
       data: {
         list,

@@ -16,7 +16,7 @@ export class ClassificationService {
    *
    * @param body 实体对象
    */
-  async createLabel(body: any): Promise<any> {
+  async createClass(body: any): Promise<any> {
     const { name } = body;
     const data = await this.classificationModel.findOne({ name });
     if (data) {
@@ -36,56 +36,34 @@ export class ClassificationService {
     }
   }
   /**
-   * 删除
-   *
-   * @param id ID
-   */
-  async deleteLabel(id: ObjectId): Promise<void> {
-    await this.classificationModel.findByIdAndUpdate(id, { deleteFlag: 1 });
-  }
-  /**
-   * 更新
-   *
-   * @param id ID
-   * @param body 内容
-   */
-  async updateLabel(id: ObjectId, body: any): Promise<void> {
-    const { name } = body;
-    await this.classificationModel.findByIdAndUpdate(id, { name });
-  }
-  /**
-   * 查询
-   *
-   * @param id ID
-   */
-  async findLabel(id: ObjectId): Promise<any> {
-    return await this.classificationModel.findById(id);
-  }
-  /**
    * 更新状态
    *
    * @param id ID
    * @param status 状态
    */
-  async upDateLabelStatus(id: ObjectId, status: number): Promise<void> {
+  async upDateClassStatus(id: ObjectId, status: number): Promise<void> {
     await this.classificationModel.findByIdAndUpdate(id, { status });
   }
   /**
-   * 查询标签列表
+   * 查询分类列表
    *
    * @query query 内容
    */
-  async labelList(query: any): Promise<any> {
+  async classList(query: any): Promise<any> {
     const { pageNo, pageSize } = query;
     const skip = (pageNo - 1) * pageSize;
     const findObj = await this.ListFindObj(query);
-    console.log(findObj);
-    const data = await this.classificationModel
-      .find(findObj, '-deleteFlag', {
-        sort: '-createdAt',
+    const selectObj = {
+      sort: '-createdAt',
+    };
+    if (pageNo && pageSize) {
+      Object.assign(selectObj, {
         limit: pageSize * 1,
         skip,
-      })
+      });
+    }
+    const data = await this.classificationModel
+      .find(findObj, '-deleteFlag', selectObj)
       .lean();
     return data;
   }
@@ -94,7 +72,7 @@ export class ClassificationService {
    *
    * @query query 内容
    */
-  async labelCount(query: any): Promise<any> {
+  async classCount(query: any): Promise<any> {
     const findObj = await this.ListFindObj(query);
     return this.classificationModel.countDocuments(findObj);
   }

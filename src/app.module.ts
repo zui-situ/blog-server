@@ -15,6 +15,7 @@ import { MulterModule } from '@nestjs/platform-express';
 import { AuthModule } from './modules//auth/auth.module';
 import { LabelModule } from './modules/label/label.module';
 import { ClassificationModule } from './modules/classification/classification.module';
+import { ArticleModule } from './modules/article/article.module';
 const MAO = require('multer-aliyun-oss');
 
 @Module({
@@ -39,6 +40,7 @@ const MAO = require('multer-aliyun-oss');
     AuthModule,
     LabelModule,
     ClassificationModule,
+    ArticleModule,
   ],
   controllers: [AppController],
   providers: [AppService],

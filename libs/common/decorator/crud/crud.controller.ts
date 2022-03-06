@@ -1,3 +1,4 @@
+import { UserDocument } from '@app/db/models/user.model';
 import {
   Body,
   Get,
@@ -11,6 +12,7 @@ import {
 import { AuthGuard } from '@nestjs/passport';
 import { ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
 import { Model, ObjectId } from 'mongoose';
+import { CurrentUser } from '../current.user.decorator';
 
 export class CrudPlaceholderDto {
   fake?: string;
@@ -30,8 +32,11 @@ export class CrudController {
   @ApiBearerAuth() //标签这个接口需要传递token
   @UseGuards(AuthGuard('jwt'))
   @UsePipes(new ValidationPipe()) // 使用管道验证
-  async create(@Body() body: CrudPlaceholderDto) {
-    const { findKey, createDefaultValue } = this.crudOptions;
+  async create(
+    @Body() body: CrudPlaceholderDto,
+    @CurrentUser() user: UserDocument,
+  ) {
+    const { findKey, createDefaultValue, addUser = false } = this.crudOptions;
     console.log(createDefaultValue);
     if (findKey) {
       const value = body[findKey];
@@ -48,11 +53,23 @@ export class CrudController {
           throw new HttpException({ message: `${value}的已存在` }, 404);
         }
       } else {
-        const createObj = { ...body, ...createDefaultValue };
+        const createObj = {
+          ...body,
+          ...createDefaultValue,
+        };
+        if (addUser) {
+          Object.assign(createObj, { user: user._id });
+        }
         await this.model.create(createObj);
       }
     } else {
-      const createObj = { ...body, ...createDefaultValue };
+      const createObj = {
+        ...body,
+        ...createDefaultValue,
+      };
+      if (addUser) {
+        Object.assign(createObj, { user: user._id });
+      }
       await this.model.create(createObj);
     }
 
