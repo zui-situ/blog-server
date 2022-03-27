@@ -6,6 +6,9 @@ export class createDto {
   @ApiProperty({ description: '标签名', example: 'nodejs' })
   @IsNotEmpty({ message: '标签名称不能为空' })
   readonly name: string;
+  @ApiProperty({ description: '标签图标', example: 'node' })
+  @IsNotEmpty({ message: '标签图标不能为空' })
+  readonly icon: string;
 }
 
 export class editStatusDto {

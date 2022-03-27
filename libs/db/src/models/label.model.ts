@@ -14,6 +14,10 @@ export class Label {
   @prop()
   name: string;
 
+  @ApiProperty({ description: '标签标签', example: 'html' })
+  @prop()
+  icon: string;
+
   @ApiProperty({
     description: '[禁用标记]: 0-关闭 | 1-开启',
   })

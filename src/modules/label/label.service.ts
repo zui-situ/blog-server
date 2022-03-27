@@ -26,7 +26,7 @@ export class LabelService {
       }
     } else {
       await this.labelModel.create({
-        name,
+        ...body,
         status: 0,
         deleteFlag: 1,
       });
@@ -47,8 +47,8 @@ export class LabelService {
    * @param body 内容
    */
   async updateLabel(id: ObjectId, body: any): Promise<void> {
-    const { name } = body;
-    await this.labelModel.findByIdAndUpdate(id, { name });
+    const { name, icon } = body;
+    await this.labelModel.findByIdAndUpdate(id, { name, icon });
   }
   /**
    * 查询

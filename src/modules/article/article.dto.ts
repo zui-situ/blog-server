@@ -2,13 +2,19 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty } from 'class-validator';
 
 export class listDto {
-  // @ApiProperty({
-  //   description: '[禁用标记]: 0-关闭 | 1-开启',
-  //   example: 0,
-  //   type: Number,
-  //   required: false,
-  // })
-  // readonly status: number;
+  @ApiProperty({
+    description: '[禁用标记]: 0-关闭 | 1-开启',
+    example: 0,
+    type: Number,
+    required: false,
+  })
+  readonly status: number;
+  @ApiProperty({
+    description: '分类ID',
+    type: String,
+    required: false,
+  })
+  readonly classification: string;
   @ApiProperty({
     description: '标题',
     type: String,

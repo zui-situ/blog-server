@@ -8,6 +8,7 @@
  */
 import { Module, Global, CacheModule } from '@nestjs/common';
 import { CommonService } from './common.service';
+import { OssService } from '../oss/oss.service';
 import { ConfigModule } from '@nestjs/config';
 import { DbModule } from '@app/db';
 import { JwtModule } from '@nestjs/jwt';
@@ -37,7 +38,7 @@ import { JwtModule } from '@nestjs/jwt';
     }),
     DbModule,
   ],
-  providers: [CommonService],
-  exports: [CommonService, JwtModule],
+  providers: [CommonService, OssService],
+  exports: [CommonService, JwtModule, OssService],
 })
 export class CommonModule {}

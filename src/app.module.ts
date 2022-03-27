@@ -16,6 +16,8 @@ import { AuthModule } from './modules//auth/auth.module';
 import { LabelModule } from './modules/label/label.module';
 import { ClassificationModule } from './modules/classification/classification.module';
 import { ArticleModule } from './modules/article/article.module';
+import { FreeModule } from './modules/free/free.module';
+import { FileModule } from './modules/file/file.module';
 const MAO = require('multer-aliyun-oss');
 
 @Module({
@@ -41,6 +43,8 @@ const MAO = require('multer-aliyun-oss');
     LabelModule,
     ClassificationModule,
     ArticleModule,
+    FreeModule,
+    FileModule,
   ],
   controllers: [AppController],
   providers: [AppService],
