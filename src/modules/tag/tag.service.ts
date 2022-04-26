@@ -1,13 +1,15 @@
 import { HttpException, Injectable } from '@nestjs/common';
 import { InjectModel } from 'nestjs-typegoose';
 import { ReturnModelType } from '@typegoose/typegoose';
-import { Label } from '@app/db/models/label.model';
+import { Tag } from '@app/db/models/tag.model';
 import { ObjectId } from 'mongoose';
+import { ArticleService } from '../article/article.service';
 
 @Injectable()
-export class LabelService {
+export class TagService {
   constructor(
-    @InjectModel(Label) private labelModel: ReturnModelType<typeof Label>,
+    private readonly articleService: ArticleService,
+    @InjectModel(Tag) private tagModel: ReturnModelType<typeof Tag>,
   ) {}
 
   /**
@@ -15,17 +17,17 @@ export class LabelService {
    *
    * @param body 实体对象
    */
-  async createLabel(body: any): Promise<any> {
+  async createTag(body: any): Promise<any> {
     const { name } = body;
-    const data = await this.labelModel.findOne({ name });
+    const data = await this.tagModel.findOne({ name });
     if (data) {
       if (data.deleteFlag === 1) {
-        await this.labelModel.findByIdAndUpdate(data._id, { deleteFlag: 0 });
+        await this.tagModel.findByIdAndUpdate(data._id, { deleteFlag: 0 });
       } else {
         throw new HttpException({ message: `名字${name}的标签已存在` }, 404);
       }
     } else {
-      await this.labelModel.create({
+      await this.tagModel.create({
         ...body,
         status: 0,
         deleteFlag: 1,
@@ -37,8 +39,8 @@ export class LabelService {
    *
    * @param id ID
    */
-  async deleteLabel(id: ObjectId): Promise<void> {
-    await this.labelModel.findByIdAndUpdate(id, { deleteFlag: 1 });
+  async deleteTag(id: ObjectId): Promise<void> {
+    await this.tagModel.findByIdAndUpdate(id, { deleteFlag: 1 });
   }
   /**
    * 更新
@@ -46,17 +48,17 @@ export class LabelService {
    * @param id ID
    * @param body 内容
    */
-  async updateLabel(id: ObjectId, body: any): Promise<void> {
+  async updateTag(id: ObjectId, body: any): Promise<void> {
     const { name, icon } = body;
-    await this.labelModel.findByIdAndUpdate(id, { name, icon });
+    await this.tagModel.findByIdAndUpdate(id, { name, icon });
   }
   /**
    * 查询
    *
    * @param id ID
    */
-  async findLabel(id: ObjectId): Promise<any> {
-    return await this.labelModel.findById(id);
+  async findTag(id: ObjectId): Promise<any> {
+    return await this.tagModel.findById(id);
   }
   /**
    * 更新状态
@@ -64,15 +66,15 @@ export class LabelService {
    * @param id ID
    * @param status 状态
    */
-  async upDateLabelStatus(id: ObjectId, status: number): Promise<void> {
-    await this.labelModel.findByIdAndUpdate(id, { status });
+  async upDateTagStatus(id: ObjectId, status: number): Promise<void> {
+    await this.tagModel.findByIdAndUpdate(id, { status });
   }
   /**
    * 查询标签列表
    *
    * @query query 内容
    */
-  async labelList(query: any): Promise<any> {
+  async tagList(query: any): Promise<any> {
     const { pageNo, pageSize } = query;
     const skip = (pageNo - 1) * pageSize;
     const findObj = await this.ListFindObj(query);
@@ -85,20 +87,32 @@ export class LabelService {
         skip,
       });
     }
-    console.log(selectObj);
-    const data = await this.labelModel
+    const data = await this.tagModel
       .find(findObj, '-deleteFlag', selectObj)
       .lean();
+    for (const item of data) {
+      const articleCount = await this.articleService.articleCountByTag(
+        item._id,
+      );
+      item['articleCount'] = articleCount;
+    }
     return data;
   }
   /**
-   * 查询标签总数
+   * 查询标签分页
    *
    * @query query 内容
    */
-  async labelCount(query: any): Promise<any> {
+  async tagPage(query: any): Promise<any> {
+    const { pageNo, pageSize } = query;
     const findObj = await this.ListFindObj(query);
-    return this.labelModel.countDocuments(findObj);
+    const count = await this.tagModel.countDocuments(findObj);
+    return {
+      count,
+      currentPage: Number(pageNo),
+      limit: Number(pageSize),
+      total: Math.ceil(count / pageSize),
+    };
   }
   /**
    * 查询标签查询obj

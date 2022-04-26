@@ -1,8 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { prop, modelOptions, DocumentType, Ref } from '@typegoose/typegoose';
 import { User } from './user.model';
-import { Label } from './label.model';
-import { Classification } from './classification.model';
+import { Tag } from './tag.model';
+import { Category } from './category.model';
 
 export type ArticleDocument = DocumentType<Article>;
 
@@ -17,17 +17,25 @@ export class Article {
   @prop({ ref: 'User' })
   public user: Ref<User>;
 
-  @ApiProperty({ description: '分类' })
-  @prop({ ref: 'Classification' })
-  public classification: Ref<Classification>;
+  @ApiProperty({ description: '类别' })
+  @prop({ ref: 'Category' })
+  public category: Ref<Category>;
 
   @ApiProperty({ description: '标签' })
-  @prop({ ref: 'Label' })
-  public label: Ref<Label>[]; // This is a Reference Array
+  @prop({ ref: 'Tag' })
+  public tag: Ref<Tag>[]; // This is a Reference Array
 
   @ApiProperty({ description: '标题', example: 'title' })
   @prop()
   public title: string;
+
+  @ApiProperty({ description: '描述', example: '描述描述描述' })
+  @prop()
+  public description: string;
+
+  @ApiProperty({ description: '封面', example: '' })
+  @prop()
+  public cover: string;
 
   @ApiProperty({ description: '内容', example: 'content' })
   @prop()

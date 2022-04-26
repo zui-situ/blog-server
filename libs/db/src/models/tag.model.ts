@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { prop, modelOptions, DocumentType } from '@typegoose/typegoose';
 
-export type ClassificationDocument = DocumentType<Classification>;
+export type TagDocument = DocumentType<Tag>;
 
 //为模型添加创建时间createdAt和更新时间updatedAt
 @modelOptions({
@@ -9,10 +9,18 @@ export type ClassificationDocument = DocumentType<Classification>;
     timestamps: true,
   },
 })
-export class Classification {
-  @ApiProperty({ description: '分类名称', example: '热门' })
+export class Tag {
+  @ApiProperty({ description: '标签名称', example: '热门' })
   @prop()
   name: string;
+
+  @ApiProperty({ description: '标签图标', example: 'html' })
+  @prop()
+  icon: string;
+
+  @ApiProperty({ description: '标签封面', example: '' })
+  @prop()
+  public cover: string;
 
   @ApiProperty({
     description: '[禁用标记]: 0-关闭 | 1-开启',

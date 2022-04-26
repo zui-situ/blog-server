@@ -1,11 +1,3 @@
-/*
- * @Descripttion:
- * @version:
- * @Author: situ
- * @Date: 2021-10-24 16:59:54
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-11-22 00:41:16
- */
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';

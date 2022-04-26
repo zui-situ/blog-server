@@ -21,9 +21,9 @@ export class AppController {
   }
 
   @Post('upload')
-  @UseInterceptors(FileInterceptor('file'))
-  @UseGuards(AuthGuard('jwt'))
-  @ApiBearerAuth()
+  @UseInterceptors(FileInterceptor('file')) //过滤器
+  @UseGuards(AuthGuard('jwt')) //是否需要jwt验证
+  @ApiBearerAuth() //swaggertoken验证
   async upload(@UploadedFile('file') file: string): Promise<string> {
     return file;
   }

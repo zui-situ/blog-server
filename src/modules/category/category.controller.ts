@@ -10,31 +10,31 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
-import { ClassificationService } from './classification.service';
-import { createDto, editStatusDto, listDto } from './classification.dto';
+import { CategoryService } from './category.service';
+import { createDto, editStatusDto, listDto } from './category.dto';
 import { ObjectId } from 'mongoose';
 import { AuthGuard } from '@nestjs/passport';
 import { Crud } from 'libs/common/decorator/crud/crud.decorator';
-import { Classification } from '@app/db/models/classification.model';
+import { Category } from '@app/db/models/category.model';
 import { InjectModel } from 'nestjs-typegoose';
 import { ReturnModelType } from '@typegoose/typegoose';
 
 //添加增删改查方法
 @Crud({
-  model: Classification,
+  model: Category,
   findKey: 'name',
   createDefaultValue: {
     status: 1,
     deleteFlag: 0,
   },
 })
-@Controller('classification')
+@Controller('category')
 @ApiTags('分类')
-export class ClassificationController {
+export class CategoryController {
   constructor(
-    private readonly classificationService: ClassificationService,
-    @InjectModel(Classification)
-    private model: ReturnModelType<typeof Classification>,
+    private readonly categoryService: CategoryService,
+    @InjectModel(Category)
+    private model: ReturnModelType<typeof Category>,
   ) {}
 
   @Post('editStatus/:id')
@@ -47,7 +47,7 @@ export class ClassificationController {
     @Body() body: editStatusDto,
   ): Promise<any> {
     const { status } = body;
-    await this.classificationService.upDateClassStatus(id, status);
+    await this.categoryService.upDateCategoryStatus(id, status);
     return { message: '修改成功' };
   }
 
@@ -57,12 +57,12 @@ export class ClassificationController {
   @UseGuards(AuthGuard('jwt'))
   @UsePipes(new ValidationPipe()) // 使用管道验证
   async labelList(@Query() query: listDto): Promise<any> {
-    const list = await this.classificationService.classList(query);
-    const count = await this.classificationService.classCount(query);
+    const list = await this.categoryService.categoryList(query);
+    const pagination = await this.categoryService.categoryPage(query);
     return {
       data: {
         list,
-        count,
+        pagination,
       },
     };
   }

@@ -43,13 +43,13 @@ export class ArticleController {
   @ApiBearerAuth() //标签这个接口需要传递token
   @UseGuards(AuthGuard('jwt'))
   @UsePipes(new ValidationPipe()) // 使用管道验证
-  async labelList(@Query() query: listDto): Promise<any> {
+  async articleList(@Query() query: listDto): Promise<any> {
     const list = await this.articleService.articleList(query);
-    const count = await this.articleService.articleCount(query);
+    const pagination = await this.articleService.articlePage(query);
     return {
       data: {
         list,
-        count,
+        pagination,
       },
     };
   }

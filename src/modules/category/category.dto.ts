@@ -3,8 +3,8 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { ObjectId } from 'mongoose';
 
 export class createDto {
-  @ApiProperty({ description: '标签名', example: 'nodejs' })
-  @IsNotEmpty({ message: '标签名称不能为空' })
+  @ApiProperty({ description: '分类名', example: 'nodejs' })
+  @IsNotEmpty({ message: '分类名称不能为空' })
   readonly name: string;
 }
 
@@ -15,7 +15,7 @@ export class editStatusDto {
     example: 0,
     type: Number,
   })
-  @IsNotEmpty({ message: '标签状态不能为空' })
+  @IsNotEmpty({ message: '分类状态不能为空' })
   readonly status: number;
 }
 
@@ -27,18 +27,28 @@ export class listDto {
     required: false,
   })
   readonly status: number;
+
   @ApiProperty({
-    description: '标签名称',
+    description: '类别名称',
     type: String,
     required: false,
   })
   readonly name: string;
+
+  @ApiProperty({
+    description: '类别标识',
+    type: String,
+    required: false,
+  })
+  readonly code: string;
+
   @ApiProperty({
     description: '当前页数',
     type: Number,
   })
   // @IsNotEmpty({ message: 'pageNo不能为空' })
   readonly pageNo: number;
+
   @ApiProperty({
     description: '单页数量',
     type: Number,

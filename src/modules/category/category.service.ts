@@ -1,14 +1,14 @@
 import { HttpException, Injectable } from '@nestjs/common';
 import { InjectModel } from 'nestjs-typegoose';
 import { ReturnModelType } from '@typegoose/typegoose';
-import { Classification } from '@app/db/models/classification.model';
+import { Category } from '@app/db/models/category.model';
 import { ObjectId } from 'mongoose';
 
 @Injectable()
-export class ClassificationService {
+export class CategoryService {
   constructor(
-    @InjectModel(Classification)
-    private classificationModel: ReturnModelType<typeof Classification>,
+    @InjectModel(Category)
+    private categoryModel: ReturnModelType<typeof Category>,
   ) {}
 
   /**
@@ -16,19 +16,19 @@ export class ClassificationService {
    *
    * @param body 实体对象
    */
-  async createClass(body: any): Promise<any> {
+  async createCategory(body: any): Promise<any> {
     const { name } = body;
-    const data = await this.classificationModel.findOne({ name });
+    const data = await this.categoryModel.findOne({ name });
     if (data) {
       if (data.deleteFlag === 1) {
-        await this.classificationModel.findByIdAndUpdate(data._id, {
+        await this.categoryModel.findByIdAndUpdate(data._id, {
           deleteFlag: 0,
         });
       } else {
         throw new HttpException({ message: `名称${name}的分类已存在` }, 404);
       }
     } else {
-      await this.classificationModel.create({
+      await this.categoryModel.create({
         name,
         status: 0,
         deleteFlag: 0,
@@ -41,15 +41,15 @@ export class ClassificationService {
    * @param id ID
    * @param status 状态
    */
-  async upDateClassStatus(id: ObjectId, status: number): Promise<void> {
-    await this.classificationModel.findByIdAndUpdate(id, { status });
+  async upDateCategoryStatus(id: ObjectId, status: number): Promise<void> {
+    await this.categoryModel.findByIdAndUpdate(id, { status });
   }
   /**
    * 查询分类列表
    *
    * @query query 内容
    */
-  async classList(query: any): Promise<any> {
+  async categoryList(query: any): Promise<any> {
     const { pageNo, pageSize } = query;
     const skip = (pageNo - 1) * pageSize;
     const findObj = await this.ListFindObj(query);
@@ -62,7 +62,7 @@ export class ClassificationService {
         skip,
       });
     }
-    const data = await this.classificationModel
+    const data = await this.categoryModel
       .find(findObj, '-deleteFlag', selectObj)
       .lean();
     return data;
@@ -72,9 +72,16 @@ export class ClassificationService {
    *
    * @query query 内容
    */
-  async classCount(query: any): Promise<any> {
+  async categoryPage(query: any): Promise<any> {
+    const { pageNo, pageSize } = query;
     const findObj = await this.ListFindObj(query);
-    return this.classificationModel.countDocuments(findObj);
+    const count = await this.categoryModel.countDocuments(findObj);
+    return {
+      count,
+      currentPage: Number(pageNo),
+      limit: Number(pageSize),
+      total: Math.ceil(count / pageSize),
+    };
   }
   /**
    * 查询标签查询obj

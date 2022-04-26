@@ -2,16 +2,11 @@ import { Module, Global } from '@nestjs/common';
 import { DbService } from './db.service';
 import { TypegooseModule } from 'nestjs-typegoose';
 import { User } from './models/user.model';
-import { Label } from './models/label.model';
-import { Classification } from './models/classification.model';
+import { Tag } from './models/tag.model';
+import { Category } from './models/category.model';
 import { Article } from './models/article.model';
 
-const models = TypegooseModule.forFeature([
-  User,
-  Label,
-  Classification,
-  Article,
-]);
+const models = TypegooseModule.forFeature([User, Tag, Category, Article]);
 
 //标记为全局引用模块
 @Global()

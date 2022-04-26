@@ -9,24 +9,42 @@ export class listDto {
     required: false,
   })
   readonly status: number;
+
+  @ApiProperty({
+    description: '标签ID',
+    type: String,
+    required: false,
+  })
+  readonly tag: string;
+
   @ApiProperty({
     description: '分类ID',
     type: String,
     required: false,
   })
-  readonly classification: string;
+  readonly category: string;
+
+  // @ApiProperty({
+  //   description: '标题',
+  //   type: String,
+  //   required: false,
+  // })
+  // readonly title: string;
+
   @ApiProperty({
-    description: '标题',
+    description: '关键字',
     type: String,
     required: false,
   })
-  readonly title: string;
+  readonly keyword: string;
+
   @ApiProperty({
     description: '当前页数',
     type: Number,
   })
   @IsNotEmpty({ message: 'pageNo不能为空' })
   readonly pageNo: number;
+
   @ApiProperty({
     description: '单页数量',
     type: Number,

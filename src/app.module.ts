@@ -1,20 +1,12 @@
-/*
- * @Descripttion:
- * @version:
- * @Author: situ
- * @Date: 2021-10-24 16:59:54
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-11-15 00:57:38
- */
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { CommonModule } from 'libs/common/src';
 import { UserModule } from './modules/user/user.module';
 import { MulterModule } from '@nestjs/platform-express';
-import { AuthModule } from './modules//auth/auth.module';
-import { LabelModule } from './modules/label/label.module';
-import { ClassificationModule } from './modules/classification/classification.module';
+import { AuthModule } from './modules/auth/auth.module';
+import { TagModule } from './modules/tag/tag.module';
+import { CategoryModule } from './modules/category/category.module';
 import { ArticleModule } from './modules/article/article.module';
 import { FreeModule } from './modules/free/free.module';
 import { FileModule } from './modules/file/file.module';
@@ -40,8 +32,8 @@ const MAO = require('multer-aliyun-oss');
     }),
     UserModule,
     AuthModule,
-    LabelModule,
-    ClassificationModule,
+    TagModule,
+    CategoryModule,
     ArticleModule,
     FreeModule,
     FileModule,

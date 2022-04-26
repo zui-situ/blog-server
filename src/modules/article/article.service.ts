@@ -1,6 +1,6 @@
 import { Article } from '@app/db/models/article.model';
 import { Injectable } from '@nestjs/common';
-import { ReturnModelType } from '@typegoose/typegoose';
+import { mongoose, ReturnModelType } from '@typegoose/typegoose';
 import { ObjectId } from 'mongodb';
 import { ObjectId as _ObjectId } from 'mongoose';
 import { InjectModel } from 'nestjs-typegoose';
@@ -27,8 +27,8 @@ export class ArticleService {
         limit: pageSize * 1,
         skip,
       })
-      .populate('label', 'name')
-      .populate('classification', 'name')
+      .populate('tag', 'name')
+      .populate('category', 'name')
       .lean();
     return data;
   }
@@ -37,9 +37,16 @@ export class ArticleService {
    *
    * @query query 内容
    */
-  async articleCount(query: any): Promise<any> {
+  async articlePage(query: any): Promise<any> {
+    const { pageNo, pageSize } = query;
     const findObj = await this.articleFindObj(query);
-    return this.articleModel.countDocuments(findObj);
+    const count = await this.articleModel.countDocuments(findObj);
+    return {
+      count,
+      currentPage: Number(pageNo),
+      limit: Number(pageSize),
+      total: Math.ceil(count / pageSize),
+    };
   }
   /**
    * 文章查询obj
@@ -47,21 +54,19 @@ export class ArticleService {
    * @query query 内容
    */
   articleFindObj(query) {
-    const { status, title, classification } = query;
-    const reg = new RegExp(title, 'i'); //不区分大小写
+    const { status, category, tag, keyword } = query;
+    const reg = new RegExp(keyword, 'i'); //不区分大小写
     // const ObjectId = require('mongodb').ObjectId;
-    const orObj = { title: { $regex: reg } };
-    if (classification) {
-      Object.assign(orObj, { classification: new ObjectId(classification) });
-    }
+    const orObj = [{ title: { $regex: reg } }, { content: { $regex: reg } }];
     const findObj: any = {
-      $or: [orObj],
+      $or: orObj,
       deleteFlag: 0,
     };
-    console.log(findObj);
     if (Number(status) === 1 || Number(status) === 0) {
       findObj.status = Number(status);
     }
+    if (category) findObj.category = new ObjectId(category);
+    if (tag) findObj.tag = new ObjectId(tag);
     return findObj;
   }
 
@@ -73,5 +78,34 @@ export class ArticleService {
    */
   async upDateArticleStatus(id: _ObjectId, status: number): Promise<void> {
     await this.articleModel.findByIdAndUpdate(id, { status });
+  }
+
+  /**
+   * 查询
+   *
+   * @param id ID
+   */
+  async find(id: _ObjectId): Promise<any> {
+    const data = await this.articleModel.findOneAndUpdate(
+      { _id: id },
+      { $inc: { readNum: 1 } },
+    );
+    return data;
+  }
+
+  /**
+   * 查询单一标签的文章数量
+   *
+   * @param tag ID
+   */
+  async articleCountByTag(tag: mongoose.Types.ObjectId): Promise<any> {
+    const data = await this.articleModel
+      .find({
+        tag: {
+          $elemMatch: { $eq: tag },
+        },
+      })
+      .count();
+    return data;
   }
 }

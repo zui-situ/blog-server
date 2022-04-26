@@ -1,11 +1,3 @@
-/*
- * @Descripttion:
- * @version:
- * @Author: situ
- * @Date: 2021-10-25 00:31:10
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-11-22 01:33:42
- */
 import { ApiProperty } from '@nestjs/swagger';
 import { prop, modelOptions, DocumentType } from '@typegoose/typegoose';
 import { hashSync } from 'bcryptjs';
