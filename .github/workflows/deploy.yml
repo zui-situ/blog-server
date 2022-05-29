@@ -34,27 +34,22 @@ jobs:
       - name: Configure SSH
         run: |
           mkdir -p ~/.ssh/
-          echo "$SSH_KEY" > ~/.ssh/staging.key
+          echo "$password" > ~/.ssh/staging.key
           chmod 600 ~/.ssh/staging.key
           cat >>~/.ssh/config <<END
           Host staging
-            HostName $SSH_HOST
-            User $SSH_USER
+            HostName $host
+            User $username
+            Port $port
             IdentityFile ~/.ssh/staging.key
             StrictHostKeyChecking no
           END
         env:
-          SSH_USER: ${{ secrets.USERNAME }}
-          SSH_KEY: ${{ secrets.PASSWORD }}
-          SSH_HOST: ${{ secrets.HOST }}
+          host: ${{ secrets.HOST }} # 云服务器的公网地址
+          username: ${{ secrets.USERNAME }} # 云服务器的登录用户名
+          password: ${{ secrets.PASSWORD }} # 云服务器的登录密码
+          port: ${{ secrets.PORT }} # 云服务器的端口
 
-      - name: Stop the server
-        run: ssh staging 'sudo systemctl stop my-application'
-
-      - name: Check out the source
-        run: ssh staging 'cd my-application && git fetch && git reset --hard origin/master'
-
-      - name: Start the server
-        if: ${{ always() }}
-        run: ssh staging 'sudo systemctl start my-application'
+      - name: connect ssh
+        run: ssh staging
       
