@@ -49,5 +49,5 @@ jobs:
           SSH_HOST: ${{ secrets.HOST }}
 
       - name: go service_file
-        run: ssh staging 'cd /data/service_file && bash copyEnv.sh'
+        run: cd /data/service_file && bash copyEnv.sh
       
