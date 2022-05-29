@@ -22,7 +22,7 @@ jobs:
         run: npm run build # 打包
 
       - name: Copy
-        run: npm run copy # 复制env
+        run: ./scripts/copyEnv.sh # 复制env
 
       - name: Deploy
         uses: appleboy/scp-action@v0.1.2
