@@ -111,7 +111,7 @@ export class TagService {
       count,
       currentPage: Number(pageNo),
       limit: Number(pageSize),
-      total: Math.ceil(count / pageSize),
+      totalPage: Math.ceil(count / pageSize),
     };
   }
   /**

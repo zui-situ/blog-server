@@ -11,7 +11,7 @@ import {
 } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
 import { TagService } from './tag.service';
-import { createDto, editStatusDto, listDto } from './tag.dto';
+import { editStatusDto, listDto } from './tag.dto';
 import { ObjectId } from 'mongoose';
 import { AuthGuard } from '@nestjs/passport';
 import { Crud } from 'libs/common/decorator/crud/crud.decorator';
