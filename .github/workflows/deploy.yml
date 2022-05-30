@@ -33,24 +33,23 @@ jobs:
 
       - name: Configure SSH
         run: |
-          ssh-keygen -t rsa
-          ssh-copy-id -i ~/.ssh/id_rsa.pub $username@$host
-          $password
+          mkdir -p ~/.ssh/
+          echo $key > ~/.ssh/staging.key
+          chmod 600 ~/.ssh/staging.key
           cat >>~/.ssh/config <<END
           Host staging
             HostName $host
             User $username
             Port $port
-            IdentityFile ~/.ssh/id_rsa
+            IdentityFile ~/.ssh/staging.key
             StrictHostKeyChecking no
           END
         env:
           host: ${{ secrets.HOST }} # 云服务器的公网地址
           username: ${{ secrets.USERNAME }} # 云服务器的登录用户名
-          password: ${{ secrets.PASSWORD }} # 云服务器的登录妈妈
-          key: ${{ secrets.SSH_KEY }} # 云服务器的密钥
+          key: ${{ secrets.SSH_KEY }} # 云服务器的私钥
           port: ${{ secrets.PORT }} # 云服务器的端口
 
-      - name: Start the server
+      - name: connect ssh
         run: ssh staging
       
