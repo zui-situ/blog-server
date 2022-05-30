@@ -33,14 +33,14 @@ jobs:
 
       - name: Configure SSH
         run: |
-          ssh-keygen -t rsa
-          ssh-copy-id -i ~/.ssh/id_rsa.pub $username@$host:~//.ssh/authorized_keys
+          mkdir -p ~/.ssh/
+          echo "$key" > ~/.ssh/staging.key
+          chmod 600 ~/.ssh/staging.key
           cat >>~/.ssh/config <<END
           Host staging
             HostName $host
             User $username
-            Port $port
-            IdentityFile ~/.ssh/id_rsa
+            IdentityFile ~/.ssh/staging.key
             StrictHostKeyChecking no
           END
         env:
@@ -49,6 +49,9 @@ jobs:
           key: ${{ secrets.SSH_KEY }} # 云服务器的登录密码
           port: ${{ secrets.PORT }} # 云服务器的端口
 
-      - name: connect ssh
-        run: ssh staging -tt
+      - name: Stop the server
+        run: ssh staging 'sudo systemctl stop my-application'
+
+      - name: Start the server
+        run: ssh staging 'sudo systemctl start my-application'
       
