@@ -35,7 +35,7 @@ jobs:
         run: |
           mkdir -p ~/.ssh/
           echo "$key" > ~/.ssh/staging_key
-          chmod 700 ~/.ssh/staging_key
+          chmod 600 ~/.ssh/staging_key
           cat >>~/.ssh/config <<END
           Host staging
             HostName $host
