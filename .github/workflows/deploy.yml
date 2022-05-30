@@ -51,5 +51,5 @@ jobs:
           port: ${{ secrets.PORT }} # 云服务器的端口
 
       - name: connect ssh
-        run: ssh staging
+        run: ssh staging -tt
       
