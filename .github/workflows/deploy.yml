@@ -34,14 +34,14 @@ jobs:
       - name: Configure SSH
         run: |
           mkdir -p ~/.ssh/
-          echo "$password" > ~/.ssh/staging.key
-          chmod 600 ~/.ssh/staging.key
+          echo "$password" > ~/.ssh/staging_key
+          chmod 777 ~/.ssh/staging_key
           cat >>~/.ssh/config <<END
           Host staging
             HostName $host
             User $username
             Port $port
-            IdentityFile ~/.ssh/staging.key
+            IdentityFile ~/.ssh/staging_key
             StrictHostKeyChecking no
           END
         env:
