@@ -34,7 +34,7 @@ jobs:
       - name: Configure SSH
         run: |
           ssh-keygen -t rsa
-          ssh-copy-id -i ~/.ssh/id_rsa.pub $username@$host:~//.ssh/authorized_keys
+          ssh-copy-id -i ~/.ssh/id_rsa.pub $username@$host:~/.ssh/authorized_keys
           cat >>~/.ssh/config <<END
           Host staging
             HostName $host
