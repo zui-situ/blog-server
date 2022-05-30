@@ -34,7 +34,7 @@ jobs:
       - name: Configure SSH
         run: |
           mkdir -p ~/.ssh/
-          echo "$password" > ~/.ssh/staging_key
+          echo "$key" > ~/.ssh/staging_key
           chmod 700 ~/.ssh/staging_key
           cat >>~/.ssh/config <<END
           Host staging
@@ -47,7 +47,7 @@ jobs:
         env:
           host: ${{ secrets.HOST }} # 云服务器的公网地址
           username: ${{ secrets.USERNAME }} # 云服务器的登录用户名
-          password: ${{ secrets.PASSWORD }} # 云服务器的登录密码
+          key: ${{ secrets.SSH_KEY }} # 云服务器的登录密码
           port: ${{ secrets.PORT }} # 云服务器的端口
 
       - name: connect ssh
