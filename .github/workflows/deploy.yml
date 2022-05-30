@@ -33,15 +33,14 @@ jobs:
 
       - name: Configure SSH
         run: |
-          mkdir -p ~/.ssh/
-          echo "$key" > ~/.ssh/staging_key
-          chmod 600 ~/.ssh/staging_key
+          ssh-keygen -t rsa
+          ssh-copy-id -i ~/.ssh/id_rsa.pub $username@$host:~//.ssh/authorized_keys
           cat >>~/.ssh/config <<END
           Host staging
             HostName $host
             User $username
             Port $port
-            IdentityFile ~/.ssh/staging_key
+            IdentityFile ~/.ssh/id_rsa
             StrictHostKeyChecking no
           END
         env:
