@@ -41,8 +41,6 @@ jobs:
             HostName $host
             User $username
             Port $port
-            IdentityFile ~/.ssh/staging.key
-            StrictHostKeyChecking no
           END
         env:
           host: ${{ secrets.HOST }} # 云服务器的公网地址
@@ -51,5 +49,9 @@ jobs:
           port: ${{ secrets.PORT }} # 云服务器的端口
 
       - name: connect ssh
-        run: ssh staging
+        run: |
+          ssh staging -tt
+          $password
+        env:
+          password: ${{ secrets.PASSWORD }}
       
