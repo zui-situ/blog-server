@@ -104,6 +104,8 @@ export class ArticleService {
         tag: {
           $elemMatch: { $eq: tag },
         },
+        status: 1,
+        deleteFlag: 0,
       })
       .count();
     return data;

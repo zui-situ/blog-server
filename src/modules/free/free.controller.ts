@@ -73,7 +73,7 @@ export class FreeController {
   }
 
   /**
-   * 查询标签列表
+   * 查询分类列表
    *
    * @param id ID
    */
